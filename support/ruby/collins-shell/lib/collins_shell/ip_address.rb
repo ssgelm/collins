@@ -39,6 +39,16 @@ module CollinsShell
       end
     end
 
+    desc 'delete_address ADDRESS', 'delete single address for an asset'
+    use_collins_options
+    use_tag_option(true)
+    def delete_address address
+      call_collins get_collins_client, "ip_address delete" do |client|
+        delete_count = client.ipaddress_delete! options.tag, nil, address
+        say_success "Deleted #{delete_count} addresses"
+      end
+    end
+
     desc 'delete_all', 'delete all addresses for an asset'
     use_collins_options
     use_tag_option(true)

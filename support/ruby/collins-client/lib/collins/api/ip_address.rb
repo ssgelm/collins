@@ -33,11 +33,12 @@ module Collins; module Api
       end
     end
 
-    def ipaddress_delete! asset_or_tag, pool = nil
+    def ipaddress_delete! asset_or_tag, pool = nil, address = nil
       asset = get_asset_or_tag asset_or_tag
       logger.debug("Deleting addresses for asset #{asset.tag} in pool #{pool}")
       parameters = {
-        :pool => pool
+        :pool => pool,
+        :address => address
       }
       parameters = select_non_empty_parameters parameters
       http_delete("/api/asset/#{asset.tag}/addresses", parameters, asset.location) do |response|
