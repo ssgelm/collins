@@ -34,7 +34,7 @@ module CollinsShell
     use_tag_option(true)
     def delete pool
       call_collins get_collins_client, "ip_address delete" do |client|
-        delete_count = client.ipaddress_delete! options.tag, pool
+        delete_count = client.ipaddress_delete! options.tag, { :pool => pool }
         say_success "Deleted #{delete_count} addresses"
       end
     end
@@ -44,8 +44,12 @@ module CollinsShell
     use_tag_option(true)
     def delete_address address
       call_collins get_collins_client, "ip_address delete" do |client|
-        delete_count = client.ipaddress_delete! options.tag, nil, address
-        say_success "Deleted #{delete_count} addresses"
+        delete_count = client.ipaddress_delete! options.tag, { :address => address }
+        if delete_count == 1
+          say_success "Deleted address #{address}"
+        else
+          say_error "Address #{address} not found"
+        end
       end
     end
 
